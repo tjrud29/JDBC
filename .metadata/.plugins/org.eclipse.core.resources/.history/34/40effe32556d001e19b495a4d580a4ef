@@ -1,0 +1,10 @@
+package com.kh.oracledb.CRUD;
+
+public class insertALL {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

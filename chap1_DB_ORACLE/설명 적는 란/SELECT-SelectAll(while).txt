@@ -28,7 +28,7 @@ String selectQuery = "Select * from 테이블명";
 //sql 쿼리를 실행할 준비
 PreparedStatement ps = con.prepareStatement(selectQuery);
 
-//ResultSet executeQu ery() 메서드를 호출하여 SQL SELECT쿼리를 실행하고
+//ResultSet executeQuery() 메서드를 호출하여 SQL SELECT쿼리를 실행하고
 							그 결과를 객체에 저장
 							ResultSet : 결과 집합을 표현하는 객체
 ResultSet에 담은 결과 집합을 next() 를 사용하여 확인

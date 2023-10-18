@@ -1,0 +1,63 @@
+package com.kh.oracledb.CRUD.pre;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class crudexam {
+
+	public static void main(String[] args) {
+		exam1();
+	}
+	static void exam1() { 
+
+		
+		String jdbcurl = "jdbc:oracle:thin:@localhost:1521:xe";	
+		String userName = "khcafe1";
+		String password = "khcafe1";
+		
+		try {
+			Connection con = DriverManager.getConnection(jdbcurl, userName, password);
+			String selectQuery = "SELECT * FROM menu";
+			PreparedStatement st1 = con.prepareStatement(selectQuery);
+			ResultSet result1 = st1.executeQuery();
+			
+			while(result1.next()) {
+				int menuid = result1.getInt("menu_id");
+				int cafeid = result1.getInt("cafe_id");
+				String menuname = result1.getString("menu_name");
+				int price = result1.getInt("price");
+				String description = result1.getString("description");
+				
+				System.out.print("menu_id : " + menuid);
+				System.out.print("cafe_id : " + cafeid);
+				System.out.print("menu_name : " + menuname);
+				System.out.print("price : " + price);
+				System.out.println("description : " + description);
+				
+			}
+			
+			
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+				
+	}
+	static void exam2() {
+		
+		String jdbcurl = "jdbc:oracle:thin:@localhost:1521:xe";
+		
+		
+		
+		
+		
+	}
+
+}
