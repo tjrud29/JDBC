@@ -76,9 +76,9 @@ public class cafeView {
 		System.out.println("삭제할 메뉴의 id를 입력하세요.");
 		
 		Scanner sc = new Scanner(System.in);
-		int menuid = sc.nextInt();
+		int b = sc.nextInt();
 		
-		model.deleteMenu(menuid);
+		model.deleteMenu(b);
 	}
 	
 	

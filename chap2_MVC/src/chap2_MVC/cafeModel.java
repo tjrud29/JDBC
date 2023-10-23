@@ -62,12 +62,12 @@ public class cafeModel {
 		
 	}
 	
-	public void deleteMenu(int menuid) {
+	public void deleteMenu(int a) {
 		try {
 			Connection con = DriverManager.getConnection(url,user,password);
 			String sql = "delete from menu where menu_id = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, menuid);
+			ps.setInt(1, a);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
