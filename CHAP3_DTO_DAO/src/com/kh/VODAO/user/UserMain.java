@@ -1,7 +1,5 @@
 package com.kh.VODAO.user;
 
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,7 +15,46 @@ public class UserMain {
 		UserMain um = new UserMain();
 		um.selectScanner();
 	}
+	//boolean idTrue = checkId(userId);
+	public boolean checkEmail(String userEmail) throws SQLException {
+		//1. DB연결
+		String jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbUserName = "khcafe1";
+		String dbPassWord = "khcafe1";
+		Connection cc = DriverManager.getConnection(jdbcURL, dbUserName, dbPassWord);
+		
+		String sql = "SELECT COUNT(*) FROM USERINFO WHERE email = ?";
+		PreparedStatement st = cc.prepareStatement(sql);
+		st.setString(1, userEmail);
+		ResultSet rs = st.executeQuery();
+		if (rs.next()) {
+			int count = rs.getInt(1);
+			return count > 0; //1이상이면 true
+		}
+		return false;
+	}
 	
+	public boolean checkId(int userId) throws SQLException {
+		//1. DB연결
+		String jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
+		String dbUserName = "khcafe1";
+		String dbPassWord = "khcafe1";
+		Connection cc = DriverManager.getConnection(jdbcURL, dbUserName, dbPassWord);
+		//2. SQL
+		String sql = "Select * From USERINFO where user_id = ?";
+		
+		PreparedStatement st = cc.prepareStatement(sql);
+		st.setInt(1, userId);
+		//3. IF활용해서 Result.next()
+		ResultSet rs = st.executeQuery();
+		if (rs.next()) {
+			int id = rs.getInt(1);
+			return id >0; //이상이면 true
+		}
+		//     return >0 1이상이면 일치
+		
+		return false; //일치하지 않을 때
+	}
 	public void selectScanner() {
 		//1. DB 연결 URL, USERNAME, PASSWORD
 		String jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -41,28 +78,43 @@ public class UserMain {
 				//break가 없으면 종료되지 않음 종료하겠습니다 만 출력됨
 			}
 			
-			
 			int userId = Integer.parseInt(input);
-			//select 문 출력하기 
-			String sql = "SELECT * FROM USERINFO WHERE user_id = ?";
-			PreparedStatement st = cc.prepareCall(sql);
-			st.setInt(1, userId);
 			
+			System.out.println("이메일을 입력해주세요. : ");
+			String userEmail = sc.nextLine();// sc활용
+			
+			//select 문 출력하기 
+			String sql = "SELECT * FROM USERINFO WHERE user_id = ? AND email = ?";
+			PreparedStatement st = cc.prepareStatement(sql);
+			st.setInt(1, userId);
+			st.setString(2, userEmail);
 			ResultSet rs = st.executeQuery();
 			
 			//selectOne if
 			if(rs.next()) {
-				System.out.println("user ID" + rs.getInt("user_id"));
-				System.out.println("userName :" + rs.getString("username"));
-				System.out.println("EMAIL : " + rs.getString("email"));
-				System.out.println("Registration Date" + rs.getString("reg_Date"));
-				
-			}else {
-				System.out.println("user를 찾을 수 없습니다.");
+				System.out.println("user ID   : " + rs.getInt("user_id"));
+				System.out.println("UserName  : " + rs.getString("username"));
+				System.out.println("E M A I L : " + rs.getString("email"));
+				System.out.println("Registration Date : " + rs.getDate("reg_date"));
+				System.out.println();
+			} else {
+				//boolean ID or Email 하나가 일치하지 않는 경우 처리
+				boolean idTrue = checkId(userId);
+				boolean emailTrue = checkEmail(userEmail);
+				 if(!idTrue && emailTrue) {
+					 System.out.println("일치하지 않는 User ID 입니다.");
+					 System.out.println();
+				 } else if (idTrue && !emailTrue) {
+					 System.out.println("일치하지 않는 User Email 입니다.");
+					 System.out.println();
+				 } else {
+						System.out.println("일치하는 User Id와 email을 찾을 수 없습니다.");
+						System.out.println();
+				 }
+
 			}
 			
-		
-
+			
 		}
 		
 		
@@ -77,8 +129,8 @@ public class UserMain {
 	public void selectAll() {
 		//1. DB 연결 URL, USERNAME, PASSWORD
 		String jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
-		String dbUserName = "khcafe";
-		String dbPassWord = "kh1234";
+		String dbUserName = "khcafe1";
+		String dbPassWord = "khcafe1";
 		
 		try {
 			Connection connection = DriverManager.getConnection(jdbcURL, dbUserName, dbPassWord);
@@ -93,10 +145,6 @@ public class UserMain {
 			System.out.println("Registration Date : "+u.getRegDate());
 			}
 			
-			
-			
-			
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,8 +154,8 @@ public class UserMain {
 	
 	public void insertRun() {
 		String jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
-		String dbUserName = "khcafe";
-		String dbPassWord = "kh1234";
+		String dbUserName = "khcafe1";
+		String dbPassWord = "khcafe1";
 		try {
 			Connection connection = DriverManager.getConnection(jdbcURL, dbUserName, dbPassWord);
 			UserDAO userDao = new UserDAO(connection);
