@@ -1,4 +1,4 @@
-package com.kh.MVC.ProductsAdd;
+package com.kh.MVC.shopping;
 
 
 import java.sql.Connection;
